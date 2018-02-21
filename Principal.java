@@ -141,8 +141,8 @@ class Grafo{
 		else{
 			System.out.println("ERRO: Pelo menos um vertice selecionado é invalido ou não existe!");
 		}
+			
 	}
-
 	/**
 	 * [Verifica se existe o vertice precurado no Grafo]
 	 * @param  element [Identificação do vertice buscado]
@@ -190,14 +190,11 @@ class Grafo{
 	 * @return [true caso o grafo seja completo, false caso contrario]
 	 */
 	public boolean isCompleted(){
-		boolean resp = false;
+		boolean resp = true;
 		for (int i = 0; i < getSize(); i++) {
-			if (vList[i].getDegree() == getSize()-1) {
-				resp = true;
-			}
-			else {
-				resp = false;
-				return resp;
+			resp = (vList[i].getDegree()/2 == getSize()-1) ? true : false;
+			if (!resp) {
+				i = getSize();
 			}
 		}
 		return resp;
@@ -266,6 +263,7 @@ class Principal{
 			}
 			Grafo g2 = g.complementar();
 			g2.mostarGrafo();
+
 		}
 		else if (Integer.parseInt(line) == 1) {
 			
