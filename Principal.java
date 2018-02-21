@@ -1,7 +1,7 @@
 /**
  * PUC Minas - Ciência da Computação 
  * Algoritmos em Grafos 2018/1
- * Frederico - 541507
+ * Frederico - 5415	07
  */
 import java.util.*;
 import java.io.*;
@@ -80,11 +80,12 @@ class Vertice{
 		boolean resp = false;
 		for (Edge e : edges) {
 			resp |= (e.getNext().getElement() == i); 
-			
 		}
 		return resp;
 	}
-
+	/**
+	 * [Printa todas as arestas não repetidas do grafos]
+	 */
 	public void printEdges (){
 		for (Edge e : edges) {
 			if (element < e.getNext().getElement()) {
@@ -140,8 +141,8 @@ class Grafo{
 		else{
 			System.out.println("ERRO: Pelo menos um vertice selecionado é invalido ou não existe!");
 		}
-			
 	}
+
 	/**
 	 * [Verifica se existe o vertice precurado no Grafo]
 	 * @param  element [Identificação do vertice buscado]
@@ -178,12 +179,16 @@ class Grafo{
 	}
 	/**
 	 * [Mostra o tamanho da lista, deixando claro quantos vertices existem no grafo]
-	 * @return [description]
+	 * @return [retorna a quantidade de Vertices]
 	 */
 	public int getSize(){
 		return vList.length;
 	}
 
+	/**
+	 * [Compara o tamanho do grafo com o o grau de cada vertice para saber se o grafo é completo]
+	 * @return [true caso o grafo seja completo, false caso contrario]
+	 */
 	public boolean isCompleted(){
 		boolean resp = false;
 		for (int i = 0; i < getSize(); i++) {
@@ -207,7 +212,6 @@ class Grafo{
 				
 		}
 	}
-
 
 	/**
 	 * [Metodo que verifica quias arestas faltam em um grafo e cria ela em um novo grafo]
@@ -266,14 +270,5 @@ class Principal{
 		else if (Integer.parseInt(line) == 1) {
 			
 		}
-
-		
-
-		
-
-			
-		
-		//System.out.println(g.getSize());
-
 	}
 }
