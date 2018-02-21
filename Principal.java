@@ -1,5 +1,43 @@
+/**
+ * PUC Minas - Ciência da Computação 
+ * Algoritmos em Grafos 2018/1
+ * Frederico - 541507
+ */
 import java.util.*;
 import java.io.*;
+/**
+* Classe que cria e gerencia as arestas do Grafo
+*/
+class Edge {
+	
+	private int weight;	
+	private Vertice next;
+
+	/**
+	 * [Cria a aresta com seus atributos]
+	 * @param  weight [peso da aresta]
+	 * @param  next   [apontador para o proximo vertice]
+	 * @return        [Cria a aresta]
+	 */
+	public Edge (int weight, Vertice next){
+		this.weight = weight;
+		this.next = next;
+	}
+	public void setWeigth (int weight){
+		this.weight = weight;
+	}
+	public int getWeigth(){
+		return this.weight;
+	}
+	public void setNext(Vertice next){
+		this.next = next;
+	}
+	public Vertice getNext(){
+		return this.next;
+	}
+
+}
+
 /**
  * Classe que cria e gerencia os vertices do Grafo
  */
@@ -7,39 +45,8 @@ class Vertice{
 	private int degree, element;
 	private List<Edge> edges;
 	private Edge e;
-	/**
-	 * Classe que cria e gerencia as arestas do Grafo
-	 */
-	class Edge {
 	
-		private int weight;	
-		private Vertice next;
 	
-		/**
-		 * [Cria a aresta com seus atributos]
-		 * @param  weight [peso da aresta]
-		 * @param  next   [apontador para o proximo vertice]
-		 * @return        [Cria a aresta]
-		 */
-		public Edge (int weight, Vertice next){
-			this.weight = weight;
-			this.next = next;
-		}
-
-		public void setWeigth (int weight){
-			this.weight = weight;
-		}
-		public int getWeigth(){
-			return this.weight;
-		}
-		public void setNext(Vertice next){
-			this.next = next;
-		}
-		public Vertice getNext(){
-			return this.next;
-		}
-
-	}
 	/**
 	 * Construtor do vertice com o nome peso e uma lista de aresta que apontara para os vertices
 	 * @param  element [Nome ou numero do vertice]
@@ -51,7 +58,6 @@ class Vertice{
 		this.degree = 0;
 		edges = new LinkedList<Edge>();
 	}
-
 	public void setDegree(int degree){
 		this.degree = degree;
 	}
@@ -73,16 +79,17 @@ class Vertice{
 	public boolean exist(int i){
 		boolean resp = false;
 		for (Edge e : edges) {
-			resp |= (e.next.getElement() == i); 
+			resp |= (e.getNext().getElement() == i); 
 			
 		}
 		return resp;
 	}
 
 	public void printEdges (){
-		int i = 0;
 		for (Edge e : edges) {
-				System.out.println(element + ","+e.next.getElement()+","+e.getWeigth());
+			if (element < e.getNext().getElement()) {
+				System.out.println(element + ","+e.getNext().getElement()+","+e.getWeigth());
+			}
 		}
 	}
 
@@ -197,8 +204,10 @@ class Grafo{
 	public void mostarGrafo(){
 		for (int i = 0; i < getSize(); i++) {
 			vList[i].printEdges();
+				
 		}
 	}
+
 
 	/**
 	 * [Metodo que verifica quias arestas faltam em um grafo e cria ela em um novo grafo]
