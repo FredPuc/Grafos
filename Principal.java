@@ -13,12 +13,16 @@ class Edge {
 	private int weight;	
 	private Vertice next;
 
+	public Edge (){
+		this.weight = 0;
+		this.next = null;
+	}
 	/**
-	 * [Cria a aresta com seus atributos]
-	 * @param  weight [peso da aresta]
-	 * @param  next   [apontador para o proximo vertice]
-	 * @return        [Cria a aresta]
-	 */
+	* [Cria a aresta com seus atributos]
+	* @param  weight [peso da aresta]
+	* @param  next   [apontador para o proximo vertice]
+	* @return        [Cria a aresta]
+	*/
 	public Edge (int weight, Vertice next){
 		this.weight = weight;
 		this.next = next;
@@ -35,17 +39,14 @@ class Edge {
 	public Vertice getNext(){
 		return this.next;
 	}
-
 }
 
 /**
- * Classe que cria e gerencia os vertices do Grafo
- */
+* Classe que cria e gerencia os vertices do Grafo
+*/
 class Vertice{
 	private int degree, element;
 	private List<Edge> edges;
-	private Edge e;
-	
 	
 	/**
 	 * Construtor do vertice com o nome peso e uma lista de aresta que apontara para os vertices
@@ -114,8 +115,69 @@ class Vertice{
 	}
 }
 
+/**
+ * Classe de grafo em matriz
+ */
+class GrafoMatriz {
+	private Edge graph[][];
+	private int nVertices, qntEdges;
+
+	public GrafoMatriz(int nVertices){
+		this.nVertices = nVertices;
+		for (int i = 0; i < this.nVertices; i++) {
+			for (int j = 0; j < this.nVertices; j++) {
+				graph[i][j] = new Edge();
+			}
+		}
+	}
+
+	public void addEdge(int v1, int v2, int weight){
+		graph[v1][v2].setWeigth(weight);
+		graph[v2][v1].setWeigth(weight);
+		this.qntEdges ++;
+	}
+	
+	public int qntEdges(){
+		return this.qntEdges;
+	}
+
+	public int getNumVertices (){
+		return this.nVertices;
+	}
+	public boolean isCompleted(){
+	 	boolean resp = true;
+	 	for (int i = 0; i < this.nVertices; i++) {
+	 		for (int j = 0; j < this.nVertices; j++) {
+	 			if (i != j) {
+	 				resp &= (this.graph[i][j].getWeigth() != 0); 
+	 			}
+	 		}
+	 	}
+		return resp;
+	}
+
+	public GrafoMatriz complementar(){
+		GrafoMatriz compl = new GrafoMatriz(this.nVertices);
+		for (int i = 0; i < this.nVertices; i++) {
+	 		for (int j = 0; j < this.nVertices; j++) {
+	 			if (this.graph[i][j].getWeigth() != 0 && i != j) {
+	 				compl.graph[i][j].setWeigth(0);
+	 			}
+	 			else if(this.graph[i][j].getWeigth() == 0 && i != j){
+	 				compl.graph[i][j].setWeigth(1);
+	 			}
+	 		}
+	 	}
+	 	return compl;
+	}
+
+}
+/**
+ * Classe de grafo em Lista
+ */
 class Grafo{
 	public Vertice[] vList;
+	private int qntEdges;
 	/**
 	 * [constutor do grafo]
 	 * @return [retorna uma lista de vertices]
@@ -137,45 +199,20 @@ class Grafo{
 		if (v1 < this.vList.length && v2 < this.vList.length) {
 			vList[v1].addEdge(weight, vList[v2]);
 			vList[v2].addEdge(weight, vList[v1]);
+			this.qntEdges++;
 		}
 		else{
 			System.out.println("ERRO: Pelo menos um vertice selecionado é invalido ou não existe!");
 		}
 			
 	}
-	/**
-	 * [Verifica se existe o vertice precurado no Grafo]
-	 * @param  element [Identificação do vertice buscado]
-	 * @return         [Retorna o endereço do vertice buscado[ ou null caso o vertice não exista no grafo]
-	 */
-	public Vertice getVertice(int element){
-		Vertice resp = null;
-		if (vList.length == 0) {
-			System.out.println("O Grafo não possui Vertices.");
-			return resp;
-		}
-		else{
-			for (Vertice v : this.vList) {
-				if (v.getElement() == element) {
-					resp = v;
-					return resp;
-				}
-			}
-			System.out.println("O Vertice ["+element+"] não existe.");
-			return resp;
-		}
-	}
 
 	/**
-	 * [Percorre o gafo contado quantas arestas existem no grafo]
-	 * @return [description]
+	 * [Retorna o valor todal te arestas adicionadas no gravo]
+	 * @return [O atributo de que soma as arestasdo grafo]
 	 */
-	public int allEdges(){
-		int resp = 0;
-		for (int i = 0; i < getSize(); i++) {
-			resp += vList[i].getAllEdges();
-		}
-		return resp/2; //divite por 2 para ignorar as ligações de ida e volta, considerando apenas uma delas
+	public int qntEdges(){
+		return this.qntEdges;
 	}
 	/**
 	 * [Mostra o tamanho da lista, deixando claro quantos vertices existem no grafo]
@@ -232,17 +269,18 @@ class Grafo{
 class Principal{
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
+
 		Grafo g;
 		String line;
-		String spli[] = new String[3];
+		String splt[] = new String[3];
 
 		line = s.nextLine();
 		if (Integer.parseInt(line) == 0) {
 			line = s.nextLine();
 			g = new Grafo(Integer.parseInt(line));
 			while (!(line = s.nextLine()).equals( "FIM")) {
-				spli = line.split(",");
-				g.addEdge(Integer.parseInt(spli[0]),Integer.parseInt(spli[1]),Integer.parseInt(spli[2]));
+				splt = line.split(",");
+				g.addEdge(Integer.parseInt(splt[0]),Integer.parseInt(splt[1]),Integer.parseInt(splt[2]));
 			}
 			System.out.println(g.vList[Integer.parseInt(line = s.nextLine())].getDegree());
 			line = s.nextLine();
@@ -254,7 +292,7 @@ class Principal{
 			else {
 				System.out.println("NAO");				
 			}
-			System.out.println(g.allEdges());
+			System.out.println(g.qntEdges());
 			if (g.isCompleted()) {
 				System.out.println("SIM");
 			}
@@ -268,5 +306,6 @@ class Principal{
 		else if (Integer.parseInt(line) == 1) {
 			
 		}
+		s.close();
 	}
 }
